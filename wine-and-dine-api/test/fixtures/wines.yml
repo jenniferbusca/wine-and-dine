@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  varietal: MyString
+  sweetness: MyString
+  acidity: MyString
+  tannin: MyString
+  body: MyString
+
+two:
+  varietal: MyString
+  sweetness: MyString
+  acidity: MyString
+  tannin: MyString
+  body: MyString

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  food_name: MyString
+  food_type: MyString
+  wine: one
+
+two:
+  food_name: MyString
+  food_type: MyString
+  wine: two

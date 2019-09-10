@@ -1,35 +1,31 @@
-
+const container = document.getElementById('container')
+const pairingDropdowns = document.getElementById('pairing-dropdowns')
+const winePairings = document.getElementById('wine-pairings')
 const wineDropdown = document.getElementById('wine-dropdown')
-const dropdownMenu = document.getElementById('dropdownMenuButton')
-// const birdNameInput = document.querySelector("#bird-name-input")
-// const birdSpeciesInput = document.querySelector("#bird-species-input")
-// const submitBirdButton = document.querySelector("#submit-bird-button")
+const foodPairings = document.getElementById('food-pairings')
+const foodDropdown = document.getElementById('food-dropdown')
 
-// const headersObj = {
-//       "Content-Type": "application/json",
-//       "Accept": "application/json"
-//     }
-//
-// submitBirdButton.addEventListener("click", (e) => {
-//   e.preventDefault()
-//   let birdObj = {
-//     name: birdNameInput.value,
-//     species: birdSpeciesInput.value
-//   }
-//
-//   fetch("http://localhost:3000/birds/1", {
-//     method: "PATCH",
-//     headers: headersObj,
-//     body: JSON.stringify(birdObj)
-//   })
-//   .then(res => res.json())
-//   .then(console.log)
-// })
+pairingDropdowns.addEventListener('change', handleChange)
 
-fetch("http://localhost:3000/pairings")
+function handleChange(event) {
+  console.log(event.target)
+  console.log(event.target.value)
+  console.log(event.target.dataset)
+  console.log(event.target.dataset.wineId)
+}
+
+fetch("http://localhost:3000/wines")
   .then(res => res.json())
-  .then(pairingArray => pairingArray.data.forEach(pairing => {
-    dropdownMenu.innerHTML += `
-      <a class="dropdown-item" href="#">${pairing.attributes.wine.varietal}</a>
+  .then(wineArray => wineArray.data.forEach(wine => {
+    wineDropdown.innerHTML += `
+    <option data-wine-id="${wine.id}" value="${wine.attributes.varietal}">${wine.attributes.varietal}</option>
+    `
+  }))
+
+fetch("http://localhost:3000/foods")
+  .then(res => res.json())
+  .then(foodArray => foodArray.data.forEach(food => {
+    foodDropdown.innerHTML += `
+    <option value="${food.attributes.name}">${food.attributes.name}</option>
     `
   }))

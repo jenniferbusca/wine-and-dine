@@ -1,5 +1,5 @@
 class WineSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :varietal, :sweetness, :acidity, :tannin, :body
-  has_many :food_pairings
+  attributes :varietal, :body
+  has_many :foods, through: :pairings
 end

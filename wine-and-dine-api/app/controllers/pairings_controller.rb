@@ -7,7 +7,10 @@ class PairingsController < ApplicationController
 
   def show
     pairing = Pairing.find(params[:id])
-    render json: PairingSerializer.new(pairing)
+    options = {
+      include: [:food, :wine]
+    }
+    render json: PairingSerializer.new(pairing, options)
   end
 
 end

@@ -13,15 +13,15 @@ class PairingsController < ApplicationController
     render json: PairingSerializer.new(pairing, options)
   end
 
-  def create
-    pairing = Pairing.create(pairing_params)
-    render json: pairing
-  end
-
-  private
-
-  def pairing_params
-    params.require(:pairing).permit(:wine_id, :food_id)
+  def newpairing
+    wine = Wine.create(varietal: params[:_json][0][:varietal], category: params[:_json][0][:category])
+    food = Food.create(name: params[:_json][1][:name], category: params[:_json][1][:category])
+    pair = Pairing.create(wine_id: wine.id, food_id: food.id)
+    render json: {
+      food: FoodSerializer.new(food),
+      wine: WineSerializer.new(wine),
+      pair: PairingSerializer.new(pair)
+    }
   end
 
 end

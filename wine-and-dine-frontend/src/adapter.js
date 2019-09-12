@@ -4,9 +4,13 @@ class Adapter {
     this.wineURL = `${baseURL}/wines`
     this.foodURL = `${baseURL}/foods`
     this.pairingURL = `${baseURL}/pairings`
+    this.newPairingURL = `${baseURL}/newpairing`
     this.pairingDropdowns = document.getElementById('pairing-dropdowns')
+    this.pairTypeDropdown = document.getElementById('pair-type-dropdown')
     this.wineDropdown = document.getElementById('wine-dropdown')
     this.foodDropdown = document.getElementById('food-dropdown')
+    this.winePairings= document.getElementById('wine-pairings')
+    this.foodPairings = document.getElementById('food-pairings')
     this.pairingList = document.getElementById('pairing-list')
     this.addPairForm = document.querySelector('.add-pairing-container')
     this.newPairButton = document.getElementById('new-pair-btn')
@@ -20,32 +24,39 @@ class Adapter {
     this.pairingDropdowns.addEventListener('change', this.handleChange)
     this.newPairButton.addEventListener('click', this.displayForm)
     this.submitButton.addEventListener('click', this.handleSubmitForm)
+    this.pairTypeDropdown.addEventListener('change', this.handlePairChange)
     this.headerObj = {
       "Content-Type": "application/json",
       "Accept": "application/json"
     }
   }
 
-  postNewWine(newWine) {
-    return fetch(this.wineURL, {
-      method: "POST",
-      headers: this.headerObj,
-      body: JSON.stringify(newWine)
-    })
-    .then(res => res.json())
-    .then(newWine => this.wines.push(new Wine(newWine)))
-    .then(this.renderAllWines)
+  handlePairChange = (event) => {
+    // debugger
+    let selection = event.target.value
+    if (selection == "food") {
+      this.foodPairings.style.display = 'block'
+    } else{
+      this.winePairings.style.display = 'block'
+    }
   }
 
-  postNewFood(newFood) {
-    return fetch(this.foodURL, {
+  postWineAndFood(newWine, newFood) {
+    let newPairArray= [newWine, newFood]
+    let newWinePost = fetch(this.newPairingURL, {
       method: "POST",
       headers: this.headerObj,
-      body: JSON.stringify(newFood)
+      body: JSON.stringify(newPairArray)
     })
     .then(res => res.json())
-    .then(newFood => this.foods.push(new Food(newFood)))
+    .then(newPair => {
+      let foodObj = {id: newPair.food.data.id, name: newPair.food.data.attributes.name, category: newPair.food.data.attributes.category}
+      let wineObj = {id: newPair.wine.data.id, varietal: newPair.wine.data.attributes.varietal, category: newPair.wine.data.attributes.category}
+      this.foods.push(new Food(foodObj))
+      this.wines.push(new Wine(wineObj))
+    })
     .then(this.renderAllFoods)
+    .then(this.renderAllWines)
   }
 
   displayForm = () => {
@@ -63,21 +74,11 @@ class Adapter {
       varietal: this.formInputs[0].value,
       category: this.formInputs[1].value
     }
-    this.postNewWine(newWine);
-    // find if there is a way to get new wine id back without fetching
     let newFood = {
       name: this.formInputs[2].value,
       category: this.formInputs[3].value
     }
-    this.postNewFood(newFood);
-    // find if there is a way to get new food id back without fetching
-    //placeholder post newFood
-
-    //placeholder create newPairing
-    // let newPairing = {
-    //
-    // }
-
+    this.postWineAndFood(newWine, newFood);
   }
 
   findMatching(pairingAttributes, objectId, objectType){
@@ -125,8 +126,6 @@ class Adapter {
     .then(res => res.json())
     .then(foodArray => {
       foodArray.data.forEach(food => {
-      // let { id, attributes: { name, category } } = food; //destructuring way
-      // let foodObj = { id, name, category };
       let foodObj = {id: food.id, name: food.attributes.name, category: food.attributes.category}
       let newFood = new Food(foodObj)
       this.foods.push(newFood)
@@ -157,8 +156,6 @@ class Adapter {
       this.renderAllWines()
     })
   }
-
-
 }
 
 let adapter = new Adapter("http://localhost:3000")

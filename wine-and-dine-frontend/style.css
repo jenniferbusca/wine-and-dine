@@ -4,3 +4,7 @@
   display: none;
   opacity: .8;
 }
+
+#wine-pairings, #food-pairings {
+  display: none;
+}

@@ -1,0 +1,6 @@
+.add-pairing-container {
+  width: stretch;
+  height: auto;
+  display: none;
+  opacity: .8;
+}

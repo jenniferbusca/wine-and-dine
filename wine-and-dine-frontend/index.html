@@ -7,6 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
     <title>Wine & Dine</title>
   </head>
   <body>
@@ -29,18 +30,42 @@
       </div>
 
       <div id="selected-pairings">
-        
+          <ul id="pairing-list">
+          </ul>
       </div>
 
+      <div class="add-pairing-container">
+        <form class="add-pairing-form" style="">
+          <h3>Create a pairing</h3>
 
-    <!-- <form id="make-bird-form">
-      <input placeholder="Bird name" id="bird-name-input" type="text" name="name" value=""/>
-      <br/>
-      <input placeholder="Bird species" id="bird-species-input" type="text" name="species" value=""/>
-      <br/>
-      <input id="submit-bird-button" type="submit" name="submit" value="Make A New Bird!"/>
-    </form> -->
+          <input type="text" name="varietal" value="" placeholder="Enter a wine varietal" class="input-text">
+            Select Category:
+            <select id="wine-category" name="select-category" class="input-text">
+                <option value="red">red</option>
+                <option value="white">white</option>
+                <option value="rose">rosé</option>
+                <option value="sparkling">sparkling</option>
+            </select>
+          <br>
+          <input type="text" name="name" value="" placeholder="Enter a food name" class="input-text">
+          Select Category:
+          <select id="food-category" name="select-category" class="input-text">
+              <option value="nut">nut</option>
+              <option value="cheese">cheese</option>
+              <option value="meat">meat</option>
+              <option value="fish">fish</option>
+              <option value="fruit">fruit</option>
+              <option value="vegetable">vegetable</option>
+          </select>
+          <br>
+          <input type="submit" name="submit" value="Create New Pairing" class="submit">
+        </form>
+      </div>
+      <p>Know of a great pair? <button id='new-pair-btn'>Add a new pairing</button></p>
     </div>
   </body>
-  <script src="./src/index.js"></script>
+  <!-- <script src="./src/index.js"></script> -->
+  <script src="./src/food.js"></script>
+  <script src="./src/wine.js"></script>
+  <script src="./src/adapter.js"></script>
 </html>

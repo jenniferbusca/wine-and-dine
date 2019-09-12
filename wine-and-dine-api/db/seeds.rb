@@ -5,9 +5,9 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-sauvignon_blanc = Wine.create(varietal: "Sauvignon Blanc", body: "light")
-pinot_noir = Wine.create(varietal: "Pinot Noir", body: "light")
-merlot = Wine.create(varietal: "Merlot", body: "full")
+sauvignon_blanc = Wine.create(varietal: "Sauvignon Blanc", category: "white")
+pinot_noir = Wine.create(varietal: "Pinot Noir", category: "red")
+merlot = Wine.create(varietal: "Merlot", category: "red")
 
 feta_cheese = Food.create(name: "feta cheese", category: "cheese")
 goat_cheese = Food.create(name: "goat cheese", category: "cheese")

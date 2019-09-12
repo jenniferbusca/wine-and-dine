@@ -11,4 +11,16 @@ class WinesController < ApplicationController
     # }
     render json: WineSerializer.new(wine)
   end
+
+  def create
+    wine = Wine.create(wine_params)
+    render json: wine
+  end
+
+  private
+
+  def wine_params
+    params.require(:wine).permit(:varietal, :category)
+  end
+
 end

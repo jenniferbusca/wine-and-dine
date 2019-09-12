@@ -12,4 +12,16 @@ class FoodsController < ApplicationController
     # render json: FoodSerializer.new(food, options)
     render json: FoodSerializer.new(food)
   end
+
+  def create
+    food = Food.create(food_params)
+    render json: food
+  end
+
+  private
+
+  def food_params
+    params.require(:food).permit(:name, :category)
+  end
+
 end

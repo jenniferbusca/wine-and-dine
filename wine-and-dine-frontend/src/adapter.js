@@ -10,8 +10,8 @@ class Adapter {
     this.pairingList = document.getElementById('pairing-list')
     this.addPairForm = document.querySelector('.add-pairing-container')
     this.newPairButton = document.getElementById('new-pair-btn')
-    this.addPair = false
-    this.submitButton = document.querySelector('.submit')
+    this.addPair = false // displayForm
+    this.submitButton = document.querySelector('.submit') //handleSubmitForm
     this.formInputs = document.querySelectorAll('.input-text')
 
     this.foods = []
@@ -20,6 +20,32 @@ class Adapter {
     this.pairingDropdowns.addEventListener('change', this.handleChange)
     this.newPairButton.addEventListener('click', this.displayForm)
     this.submitButton.addEventListener('click', this.handleSubmitForm)
+    this.headerObj = {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    }
+  }
+
+  postNewWine(newWine) {
+    return fetch(this.wineURL, {
+      method: "POST",
+      headers: this.headerObj,
+      body: JSON.stringify(newWine)
+    })
+    .then(res => res.json())
+    .then(newWine => this.wines.push(new Wine(newWine)))
+    .then(this.renderAllWines)
+  }
+
+  postNewFood(newFood) {
+    return fetch(this.foodURL, {
+      method: "POST",
+      headers: this.headerObj,
+      body: JSON.stringify(newFood)
+    })
+    .then(res => res.json())
+    .then(newFood => this.foods.push(new Food(newFood)))
+    .then(this.renderAllFoods)
   }
 
   displayForm = () => {
@@ -33,8 +59,25 @@ class Adapter {
 
   handleSubmitForm = (event) => {
     event.preventDefault()
-    console.log(this.formInputs)
-    // let newPairing = {}
+    let newWine = {
+      varietal: this.formInputs[0].value,
+      category: this.formInputs[1].value
+    }
+    this.postNewWine(newWine);
+    // find if there is a way to get new wine id back without fetching
+    let newFood = {
+      name: this.formInputs[2].value,
+      category: this.formInputs[3].value
+    }
+    this.postNewFood(newFood);
+    // find if there is a way to get new food id back without fetching
+    //placeholder post newFood
+
+    //placeholder create newPairing
+    // let newPairing = {
+    //
+    // }
+
   }
 
   findMatching(pairingAttributes, objectId, objectType){
@@ -82,6 +125,8 @@ class Adapter {
     .then(res => res.json())
     .then(foodArray => {
       foodArray.data.forEach(food => {
+      // let { id, attributes: { name, category } } = food; //destructuring way
+      // let foodObj = { id, name, category };
       let foodObj = {id: food.id, name: food.attributes.name, category: food.attributes.category}
       let newFood = new Food(foodObj)
       this.foods.push(newFood)
@@ -116,6 +161,6 @@ class Adapter {
 
 }
 
-let adapter = new Adapter("http://localhost:3000/")
+let adapter = new Adapter("http://localhost:3000")
 adapter.fetchFood()
 adapter.fetchWine()

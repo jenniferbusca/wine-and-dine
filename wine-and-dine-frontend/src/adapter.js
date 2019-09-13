@@ -6,7 +6,7 @@ class Adapter {
     this.pairingURL = `${baseURL}/pairings`
     this.newPairingURL = `${baseURL}/newpairing`
     this.pairingDropdowns = document.getElementById('pairing-dropdowns')//used for eventlistener on wine and food dropdowns
-    this.pairTypeDropdown = document.getElementById('pair-type-dropdown')
+    this.pairTypeSelect = document.getElementById('pair-type-select')
     this.wineDropdown = document.getElementById('wine-dropdown')
     this.foodDropdown = document.getElementById('food-dropdown')
     this.winePairings= document.getElementById('wine-pairings')
@@ -17,14 +17,12 @@ class Adapter {
     this.addPair = false // displayForm
     this.submitButton = document.querySelector('.submit') //handleSubmitForm
     this.formInputs = document.querySelectorAll('.input-text')
-
     this.foods = []
     this.wines = []
-
     this.pairingDropdowns.addEventListener('change', this.handleChange)
     this.newPairButton.addEventListener('click', this.displayForm)
     this.submitButton.addEventListener('click', this.handleSubmitForm)
-    this.pairTypeDropdown.addEventListener('change', this.handlePairChange)
+    this.pairTypeSelect.addEventListener('click', this.handlePairChange)
     this.headerObj = {
       "Content-Type": "application/json",
       "Accept": "application/json"
@@ -89,7 +87,7 @@ class Adapter {
     }
     if (newWine.varietal == "" || newFood.name == ""){
       event.preventDefault() // prevent page refresh if fields are empty
-      alert("Please enter a wine and food to pair")
+      alert("Please enter a wine and food to pair.")
       return false;
     }
     this.postWineAndFood(newWine, newFood);
@@ -113,13 +111,13 @@ class Adapter {
         if(objectType == "wine-dropdown"){
           let foodPairs = pairing.attributes.food.name
           this.pairingList.innerHTML += `
-          <li>${foodPairs}</li>
+          <li class="list-group-item">${foodPairs}</li>
           `
         }
         else if(objectType == "food-dropdown"){
           let winePairs = pairing.attributes.wine.varietal
           this.pairingList.innerHTML += `
-          <li>${winePairs}</li>
+          <li class="list-group-item">${winePairs}</li>
           `
         }
       }))

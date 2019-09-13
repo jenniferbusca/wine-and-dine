@@ -11,63 +11,103 @@
     <title>Wine & Dine</title>
   </head>
   <body>
-    <div id="container">
+  <nav class="navbar">
+    <a class="navbar-brand" href="#">
+      <img src="logo.png" width="250" height="auto" class="d-inline-block align-top" alt="">
+    </a>
+  </nav>
 
-      <h1>Wine & Dine</h1>
+  <div id="container">
+    <div class="col-sm-8">
 
-      What do you want to pair?
-      <select id="pair-type-dropdown" name="pair-type-dropdown">
-          <option value="wine">wine</option>
-          <option value="food">food</option>
-      </select>
+      <section>
+        <div class="row card">
+          <div class="card-body">
+            <div class="form-group">
+              <h2><label for="pair-type-dropdown">What do you want to pair?</label></h2>
+              <div class="btn-group" role="group" aria-label="Basic example" id="pair-type-select">
+                <button type="button" class="btn btn-secondary btn-lg" value="food">Food</button>
+                <button type="button" class="btn btn-secondary btn-lg" value="wine">Wine</button>
+              </div>
+            </div>
 
-      <div id="pairing-dropdowns">
-        <div id="wine-pairings">
-          <label for="wine-pairings">Select a Wine to see Food Pairings:</label>
-          <select id="wine-dropdown" name="select-wine"></select>
+            <div id="pairing-dropdowns">
+              <div id="wine-pairings">
+                <label for="wine-pairings">Select a Wine to see Food Pairings:</label>
+                <select id="wine-dropdown" name="select-wine" class="form-control"></select>
+              </div>
+              <div id="food-pairings">
+                <label for="food-pairings">Select a Food to see Wine Pairings:</label>
+                <select id="food-dropdown" name="select-food" class="form-control"></select>
+              </div>
+            </div>
+
+            <div id="selected-pairings">
+              <ul id="pairing-list" class="list-group">
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="add-pairing-container card">
+
+          <div class="card-body">
+            <h3>Create a pairing</h3>
+            <form class="add-pairing-form" style="">
+
+                <div class="row form-group">
+                  <div class="col">
+                    <label for="wine-input">Wine Varietal:</label>
+                    <input type="text" name="varietal" value="" placeholder="Enter a wine varietal" class="input-text form-control" id="wine-input">
+                  </div>
+                  <div class="col">
+                    <label for="wine-category">Select Wine Category:</label>
+                    <select id="wine-category" name="select-category" class="input-text form-control">
+                        <option value="red">red</option>
+                        <option value="white">white</option>
+                        <option value="rose">rosé</option>
+                        <option value="sparkling">sparkling</option>
+                    </select>
+                  </div>
+                </div>
+
+              <div class="row form-group">
+                <div class="col">
+                  <label for="food-input">Food Name:</label>
+                  <input type="text" name="name" value="" placeholder="Enter a food name" class="input-text form-control" id="food-input">
+                </div>
+                <div class="col">
+                  <label for="food-category">Select Food Category:</label>
+                  <select id="food-category" name="select-category" class="input-text form-control">
+                      <option value="nut">nut</option>
+                      <option value="cheese">cheese</option>
+                      <option value="meat">meat</option>
+                      <option value="fish">fish</option>
+                      <option value="fruit">fruit</option>
+                      <option value="vegetable">vegetable</option>
+                  </select>
+                </div>
+              </div>
+
+              <input type="submit" name="submit" value="Create New Pairing" class="submit btn btn-secondary">
+
+            </form>
+          </div>
         </div>
 
-        <div id="food-pairings">
-          <label for="food-pairings">Select a Food to see Wine Pairings:</label>
-          <select id="food-dropdown" name="select-food"></select>
+        <div class="card">
+          <div class="card-body toggle-button">
+            <label for="new-pair-btn">Know of a great food and wine pair?</label>
+            <button id='new-pair-btn' class="btn btn-secondary">Add a new pairing</button>
+          </div>
         </div>
+      </section>
 
       </div>
-
-      <div id="selected-pairings">
-          <ul id="pairing-list">
-          </ul>
-      </div>
-
-      <div class="add-pairing-container">
-        <form class="add-pairing-form" style="">
-          <h3>Create a pairing</h3>
-
-          <input type="text" name="varietal" value="" placeholder="Enter a wine varietal" class="input-text">
-            Select Category:
-            <select id="wine-category" name="select-category" class="input-text">
-                <option value="red">red</option>
-                <option value="white">white</option>
-                <option value="rose">rosé</option>
-                <option value="sparkling">sparkling</option>
-            </select>
-          <br>
-          <input type="text" name="name" value="" placeholder="Enter a food name" class="input-text">
-          Select Category:
-          <select id="food-category" name="select-category" class="input-text">
-              <option value="nut">nut</option>
-              <option value="cheese">cheese</option>
-              <option value="meat">meat</option>
-              <option value="fish">fish</option>
-              <option value="fruit">fruit</option>
-              <option value="vegetable">vegetable</option>
-          </select>
-          <br>
-          <input type="submit" name="submit" value="Create New Pairing" class="submit">
-        </form>
-      </div>
-      <p>Know of a great food and wine pair? <button id='new-pair-btn'>Add a new pairing</button></p>
     </div>
+
   </body>
 
   <script src="./src/food.js"></script>

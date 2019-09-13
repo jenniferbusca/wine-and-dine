@@ -1,8 +1,28 @@
 .add-pairing-container {
-  width: stretch;
-  height: auto;
   display: none;
-  opacity: .8;
+
+}
+
+.card {
+  background-color: hsla(360, 0%, 100%, 0.7);
+}
+
+.btn {
+  background-color: #112d37;
+}
+
+section {
+  padding: 10%;
+}
+
+#container {
+background-image: url("Wine_Food_Pairing_FullBleed.jpg");
+height: 100vh;
+}
+
+.navbar {
+  background-color: #112d37;
+  padding: 20px 30px;
 }
 
 #wine-pairings, #food-pairings {

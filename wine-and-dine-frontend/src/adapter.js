@@ -5,7 +5,7 @@ class Adapter {
     this.foodURL = `${baseURL}/foods`
     this.pairingURL = `${baseURL}/pairings`
     this.newPairingURL = `${baseURL}/newpairing`
-    this.pairingDropdowns = document.getElementById('pairing-dropdowns')
+    this.pairingDropdowns = document.getElementById('pairing-dropdowns')//used for eventlistener on wine and food dropdowns
     this.pairTypeDropdown = document.getElementById('pair-type-dropdown')
     this.wineDropdown = document.getElementById('wine-dropdown')
     this.foodDropdown = document.getElementById('food-dropdown')
@@ -32,12 +32,14 @@ class Adapter {
   }
 
   handlePairChange = (event) => {
-    // debugger
+    this.pairingList.innerHTML = ``
     let selection = event.target.value
     if (selection == "food") {
       this.foodPairings.style.display = 'block'
-    } else{
+      this.winePairings.style.display = 'none'
+    } else if (selection == "wine"){
       this.winePairings.style.display = 'block'
+      this.foodPairings.style.display = 'none'
     }
   }
 
@@ -50,8 +52,16 @@ class Adapter {
     })
     .then(res => res.json())
     .then(newPair => {
-      let foodObj = {id: newPair.food.data.id, name: newPair.food.data.attributes.name, category: newPair.food.data.attributes.category}
-      let wineObj = {id: newPair.wine.data.id, varietal: newPair.wine.data.attributes.varietal, category: newPair.wine.data.attributes.category}
+      let foodObj = {
+        id: newPair.food.data.id,
+        name: newPair.food.data.attributes.name,
+        category: newPair.food.data.attributes.category
+      }
+      let wineObj = {
+        id: newPair.wine.data.id,
+        varietal: newPair.wine.data.attributes.varietal,
+        category: newPair.wine.data.attributes.category
+      }
       this.foods.push(new Food(foodObj))
       this.wines.push(new Wine(wineObj))
     })
@@ -69,7 +79,6 @@ class Adapter {
   }
 
   handleSubmitForm = (event) => {
-    event.preventDefault()
     let newWine = {
       varietal: this.formInputs[0].value,
       category: this.formInputs[1].value
@@ -78,13 +87,18 @@ class Adapter {
       name: this.formInputs[2].value,
       category: this.formInputs[3].value
     }
+    if (newWine.varietal == "" || newFood.name == ""){
+      event.preventDefault() // prevent page refresh if fields are empty
+      alert("Please enter a wine and food to pair")
+      return false;
+    }
     this.postWineAndFood(newWine, newFood);
   }
 
   findMatching(pairingAttributes, objectId, objectType){
   let category = objectType.split("-")[0]
   let match = pairingAttributes.filter(x =>
-    x.attributes[`${category}`].id === Number(objectId)); //use bracket notation to interpolate here
+    x.attributes[category].id === Number(objectId)); //use bracket notation to interpolate here
     return match;
   };
 
@@ -114,6 +128,9 @@ class Adapter {
 // render entire list of food objects
   renderAllFoods = () => {
     this.foodDropdown.innerHTML = ""
+    this.foods = this.foods.filter( function( item, index, inputArray ) {
+      return inputArray.indexOf(item) == index;
+    }); //dedupes array
     this.foods.forEach(food => {
       this.foodDropdown.innerHTML += `
       <option value="${food.id}">${food.name}</option>
@@ -126,7 +143,11 @@ class Adapter {
     .then(res => res.json())
     .then(foodArray => {
       foodArray.data.forEach(food => {
-      let foodObj = {id: food.id, name: food.attributes.name, category: food.attributes.category}
+      let foodObj = {
+        id: food.id,
+        name: food.attributes.name,
+        category: food.attributes.category
+      }
       let newFood = new Food(foodObj)
       this.foods.push(newFood)
     })
@@ -137,6 +158,9 @@ class Adapter {
 // render entire list of wine objects
   renderAllWines = () => {
     this.wineDropdown.innerHTML = ""
+    this.wines = this.wines.filter( function( item, index, inputArray ) {
+      return inputArray.indexOf(item) == index;
+    }); // dedupes array
     this.wines.forEach(wine => {
       this.wineDropdown.innerHTML += `
       <option value="${wine.id}">${wine.varietal}</option>
@@ -149,7 +173,11 @@ class Adapter {
     .then(res => res.json())
     .then(wineArray => {
       wineArray.data.forEach(wine => {
-      let wineObj = {id: wine.id, varietal: wine.attributes.varietal, category: wine.attributes.category}
+      let wineObj = {
+        id: wine.id,
+        varietal: wine.attributes.varietal,
+        category: wine.attributes.category
+      }
       let newWine = new Wine(wineObj)
       this.wines.push(newWine)
     })
@@ -161,3 +189,28 @@ class Adapter {
 let adapter = new Adapter("http://localhost:3000")
 adapter.fetchFood()
 adapter.fetchWine()
+
+//
+// postWineAndFood(newWine, newFood) {
+//   let newPairArray = []
+//   let newWinePost = fetch(this.wineURL, {
+//     method: "POST",
+//     headers: this.headerObj,
+//     body: JSON.stringify(newWine)
+//   })
+//   .then(res => res.json())
+//   .then(newWine => this.wines.push(new Wine(newWine)))
+//   .then(newWineObj => newPairArray.push(newWineObj))
+//   .then(this.renderAllWines)
+//   let newFoodPost = fetch(this.foodURL, {
+//       method: "POST",
+//       headers: this.headerObj,
+//       body: JSON.stringify(newFood)
+//     })
+//     .then(res => res.json())
+//     .then(newFood => this.foods.push(new Food(newFood)))
+//     .then(newFoodObj => newPairArray.push(newFoodObj))
+//     .then(this.renderAllFoods)
+//     console.log(newPairArray)
+//   return newPairArray
+// }

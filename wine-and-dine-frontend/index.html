@@ -15,20 +15,20 @@
 
       <h1>Wine & Dine</h1>
 
-      <div id="pairing-dropdowns">
-        What do you want to pair?
-        <select id="pair-type-dropdown" name="pair-type-dropdown">
-            <option value="wine">wine</option>
-            <option value="food">food</option>
-        </select>
+      What do you want to pair?
+      <select id="pair-type-dropdown" name="pair-type-dropdown">
+          <option value="wine">wine</option>
+          <option value="food">food</option>
+      </select>
 
+      <div id="pairing-dropdowns">
         <div id="wine-pairings">
-          <label for="wine-pairings">Select a Wine to Pair:</label>
+          <label for="wine-pairings">Select a Wine to see Food Pairings:</label>
           <select id="wine-dropdown" name="select-wine"></select>
         </div>
 
         <div id="food-pairings">
-          <label for="food-pairings">Select a Food to Pair:</label>
+          <label for="food-pairings">Select a Food to see Wine Pairings:</label>
           <select id="food-dropdown" name="select-food"></select>
         </div>
 
@@ -66,10 +66,10 @@
           <input type="submit" name="submit" value="Create New Pairing" class="submit">
         </form>
       </div>
-      <p>Know of a great pair? <button id='new-pair-btn'>Add a new pairing</button></p>
+      <p>Know of a great food and wine pair? <button id='new-pair-btn'>Add a new pairing</button></p>
     </div>
   </body>
-  <!-- <script src="./src/index.js"></script> -->
+
   <script src="./src/food.js"></script>
   <script src="./src/wine.js"></script>
   <script src="./src/adapter.js"></script>

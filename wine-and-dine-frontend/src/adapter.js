@@ -23,6 +23,7 @@ class Adapter {
     this.newPairButton.addEventListener('click', this.displayForm)
     this.submitButton.addEventListener('click', this.handleSubmitForm)
     this.pairTypeSelect.addEventListener('click', this.handlePairChange)
+    this.pairingList.addEventListener('mouseover', this.handleMouseover)
     this.headerObj = {
       "Content-Type": "application/json",
       "Accept": "application/json"
@@ -39,6 +40,21 @@ class Adapter {
       this.winePairings.style.display = 'block'
       this.foodPairings.style.display = 'none'
     }
+  }
+
+  handleMouseover = (event) => {
+    let arr = this.foods.concat(this.wines)
+    let selectedText = event.target.innerHTML
+    const wineClass = document.querySelector('.wine-item')
+    const foodClass = document.querySelector('.food-item')
+    let selected = arr.find(obj => {
+      if(foodClass === null){
+        return obj.varietal === selectedText
+      } else{
+        return obj.name === selectedText
+      }
+    })
+    return selected
   }
 
   postWineAndFood(newWine, newFood) {
@@ -111,13 +127,13 @@ class Adapter {
         if(objectType == "wine-dropdown"){
           let foodPairs = pairing.attributes.food.name
           this.pairingList.innerHTML += `
-          <li class="list-group-item">${foodPairs}</li>
+          <li class="list-group-item food-item">${foodPairs}</li>
           `
         }
         else if(objectType == "food-dropdown"){
           let winePairs = pairing.attributes.wine.varietal
           this.pairingList.innerHTML += `
-          <li class="list-group-item">${winePairs}</li>
+          <li class="list-group-item wine-item">${winePairs}</li>
           `
         }
       }))
@@ -187,6 +203,7 @@ class Adapter {
 let adapter = new Adapter("http://localhost:3000")
 adapter.fetchFood()
 adapter.fetchWine()
+
 
 //
 // postWineAndFood(newWine, newFood) {

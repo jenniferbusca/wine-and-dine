@@ -101,15 +101,13 @@ class Adapter {
   };
 
   renderCards(objPairs){
-    let objName = objPairs.name === null ? objPairs.varietal : objPairs.name
+    let objName = objPairs.name === undefined ? objPairs.varietal : objPairs.name
     this.pairingList.innerHTML += `
      <div class="card">
-       <div class="card-header" id="heading${objPairs.id}">
-         <h5 class="mb-0">
-           <button class="list-group-item list-group-item-action" type="button" data-toggle="collapse" data-target="#collapse${objPairs.id}" aria-expanded="false" aria-controls="#collapse${objPairs.id}">
-            ${objName}
-           </button>
-         </h5>
+       <div class="card-header pair-card" id="heading${objPairs.id}">
+         <button class="list-group-item list-group-item-action pair-item"  type="button" data-toggle="collapse" data-target="#collapse${objPairs.id}" aria-expanded="false" aria-controls="#collapse${objPairs.id}">
+          ${objName}
+         </button>
        </div>
        <div id="collapse${objPairs.id}" class="collapse" aria-labelledby="heading${objPairs.id}" data-parent="#accordionExample">
          <div class="card-body">
@@ -122,6 +120,7 @@ class Adapter {
 
   handleChange = (event) => {
     this.pairingList.innerHTML = ``//clears previous list
+    // debugger
     let objectId = event.target.value
     let objectType = event.target.id
     fetch(this.pairingURL)

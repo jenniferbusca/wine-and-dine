@@ -5,14 +5,19 @@
 
 .card {
   background-color: hsla(360, 0%, 100%, 0.7);
-  /* margin: 7%; */
+  /* margin: 8%; */
 }
-
-
 
 .btn {
   background-color: #112d37;
 }
+
+.pair-card, .pair-item {
+background-color: hsla(360, 0%, 100%, 0);
+border: 0px;
+padding: 5px;
+}
+
 
 section {
   padding: 20px 15%;
@@ -37,9 +42,6 @@ h2, h3, h5 #pair-type-select, #new-pair-btn {
   padding: 20px;
 }
 
-/* #pairing-dropdowns {
-  padding: 8%;
-} */
 
 #wine-pairings, #food-pairings {
   display: none;

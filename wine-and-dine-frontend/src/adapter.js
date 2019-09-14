@@ -15,6 +15,7 @@ class Adapter {
     this.addPairForm = document.querySelector('.add-pairing-container')
     this.newPairButton = document.getElementById('new-pair-btn')
     this.addPair = false // displayForm
+    this.selectionInfo = document.querySelector('.selection-info')
     this.submitButton = document.querySelector('.submit') //handleSubmitForm
     this.formInputs = document.querySelectorAll('.input-text')
     this.foods = []
@@ -31,6 +32,7 @@ class Adapter {
   }
 
   handlePairChange = (event) => {
+    this.selectionInfo.innerHTML = ``
     this.pairingList.innerHTML = ``
     let selection = event.target.value
     if (selection == "food") {
@@ -54,7 +56,20 @@ class Adapter {
         return obj.name === selectedText
       }
     })
-    return selected
+    this.selectionInfo.innerHTML = `
+    <h5> ${selected[Object.keys(selected)[1]].capitalize()} is a ${selected.category} and is a great pair!</h5>
+    `
+    this.selectionInfo.style.display = 'block'
+
+  }
+
+  showSelectionInfo = () => {
+    this.addPair = !this.addPair
+    if (this.addPair) {
+      this.addPairForm.style.display = 'block'
+    } else{
+      this.addPairForm.style.display = 'none'
+    }
   }
 
   postWineAndFood(newWine, newFood) {
@@ -68,7 +83,7 @@ class Adapter {
     .then(newPair => {
       let foodObj = {
         id: newPair.food.data.id,
-        name: newPair.food.data.attributes.name,
+        name: newPair.food.data.attributes.name.capitalize(),
         category: newPair.food.data.attributes.category
       }
       let wineObj = {
@@ -127,13 +142,13 @@ class Adapter {
         if(objectType == "wine-dropdown"){
           let foodPairs = pairing.attributes.food.name
           this.pairingList.innerHTML += `
-          <li class="list-group-item food-item">${foodPairs}</li>
+          <li class="list-group-item list-group-item-action food-item">${foodPairs}</li>
           `
         }
         else if(objectType == "food-dropdown"){
           let winePairs = pairing.attributes.wine.varietal
           this.pairingList.innerHTML += `
-          <li class="list-group-item wine-item">${winePairs}</li>
+          <li class="list-group-item list-group-item-action wine-item">${winePairs}</li>
           `
         }
       }))
@@ -204,7 +219,9 @@ let adapter = new Adapter("http://localhost:3000")
 adapter.fetchFood()
 adapter.fetchWine()
 
-
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
 //
 // postWineAndFood(newWine, newFood) {
 //   let newPairArray = []

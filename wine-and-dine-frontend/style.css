@@ -1,6 +1,6 @@
-.add-pairing-container {
+.add-pairing-container, .selection-info {
   display: none;
-
+  padding: 20px;
 }
 
 .card {
@@ -12,17 +12,30 @@
 }
 
 section {
-  padding: 10%;
+  padding: 20px 15%;
 }
 
 #container {
 background-image: url("Wine_Food_Pairing_FullBleed.jpg");
 height: 100vh;
+height: 100vh;
+}
+
+#new-pair-btn {
+  background-color: #F7B08D;
+}
+
+h2, h3, h5 #pair-type-select, #new-pair-btn {
+  font-family: 'Open Sans Condensed', sans-serif;
 }
 
 .navbar {
   background-color: #112d37;
   padding: 20px 30px;
+}
+
+#pairing-dropdowns {
+  padding: 20px;
 }
 
 #wine-pairings, #food-pairings {

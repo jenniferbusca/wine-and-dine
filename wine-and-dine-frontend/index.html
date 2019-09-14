@@ -8,81 +8,46 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
     <title>Wine & Dine</title>
   </head>
   <body>
-  <nav class="navbar">
-    <a class="navbar-brand" href="#">
-      <img src="logo.png" width="250" height="auto" class="d-inline-block align-top" alt="">
-    </a>
-  </nav>
-
-  <div id="container">
-    <div class="col-sm-8">
-
-      <section>
-        <div class="row card">
-          <div class="card-body">
-            <div class="form-group">
-              <h2><label for="pair-type-dropdown">What do you want to pair?</label></h2>
-              <div class="btn-group" role="group" aria-label="Basic example" id="pair-type-select">
-                <button type="button" class="btn btn-secondary btn-lg" value="food">Food</button>
-                <button type="button" class="btn btn-secondary btn-lg" value="wine">Wine</button>
-              </div>
-            </div>
-
-            <div id="pairing-dropdowns">
-              <div id="wine-pairings">
-                <label for="wine-pairings">Select a Wine to see Food Pairings:</label>
-                <select id="wine-dropdown" name="select-wine" class="form-control"></select>
-              </div>
-              <div id="food-pairings">
-                <label for="food-pairings">Select a Food to see Wine Pairings:</label>
-                <select id="food-dropdown" name="select-food" class="form-control"></select>
-              </div>
-            </div>
-
-            <div id="selected-pairings">
-
-              <ul id="pairing-list" class="list-group">
-              </ul>
-              
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      <section>
+    <nav class="navbar navbar-light">
+      <a class="navbar-brand">
+        <img src="logo.png" width="250" height="auto" class="d-inline-block align-top" alt="">
+      </a>
+      <button id='new-pair-btn' class="navbar-toggler btn btn-secondary" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span>CREATE A NEW PAIRING</span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <div class="add-pairing-container card">
-
           <div class="card-body">
             <h3>Create a pairing</h3>
             <form class="add-pairing-form" style="">
 
-                <div class="row form-group">
-                  <div class="col">
-                    <label for="wine-input">Wine Varietal:</label>
-                    <input type="text" name="varietal" value="" placeholder="Enter a wine varietal" class="input-text form-control" id="wine-input">
-                  </div>
-                  <div class="col">
-                    <label for="wine-category">Select Wine Category:</label>
-                    <select id="wine-category" name="select-category" class="input-text form-control">
-                        <option value="red">red</option>
-                        <option value="white">white</option>
-                        <option value="rose">rosé</option>
-                        <option value="sparkling">sparkling</option>
-                    </select>
-                  </div>
+              <div class="row form-group">
+                <div class="col">
+                  <label for="wine-input">Wine Varietal:</label>
+                  <input type="text" name="varietal" value="" placeholder="Wine varietal" class="input-text form-control" id="wine-input">
                 </div>
+                <div class="col">
+                  <label for="wine-category">Wine Category:</label>
+                  <select id="wine-category" name="select-category" class="input-text form-control">
+                      <option value="red">red</option>
+                      <option value="white">white</option>
+                      <option value="rose">rosé</option>
+                      <option value="sparkling">sparkling</option>
+                  </select>
+                </div>
+              </div>
 
               <div class="row form-group">
                 <div class="col">
                   <label for="food-input">Food Name:</label>
-                  <input type="text" name="name" value="" placeholder="Enter a food name" class="input-text form-control" id="food-input">
+                  <input type="text" name="name" value="" placeholder="Food name" class="input-text form-control" id="food-input">
                 </div>
                 <div class="col">
-                  <label for="food-category">Select Food Category:</label>
+                  <label for="food-category">Food Category:</label>
                   <select id="food-category" name="select-category" class="input-text form-control">
                       <option value="nut">nut</option>
                       <option value="cheese">cheese</option>
@@ -94,21 +59,53 @@
                 </div>
               </div>
 
-              <input type="submit" name="submit" value="Create New Pairing" class="submit btn btn-secondary">
-
-            </form>
-          </div>
+          <input type="submit" name="submit" value="Create New Pairing" class="submit btn btn-secondary">
+        </form>
         </div>
+      </div>
+    </div>
+  </nav>
 
-        <div class="card">
-          <div class="card-body toggle-button">
-            <label for="new-pair-btn">Know of a great food and wine pair?</label>
-            <button id='new-pair-btn' class="btn btn-secondary">Add a new pairing</button>
+
+  <div id="container">
+    <div class="col-sm-12 ">
+
+      <section>
+        <div class="row card">
+          <div class="card-body">
+            <div class="form-group text-center">
+              <h2> <label for="pair-type-select">What do you want to pair?</label></h2>
+              <div class="btn-group" role="group" aria-label="Basic example" id="pair-type-select">
+                <button type="button" class="btn btn-secondary btn-lg" value="food">FOOD</button>
+                <button type="button" class="btn btn-secondary btn-lg" value="wine">WINE</button>
+              </div>
+            </div>
+
+            <div id="pairing-dropdowns">
+              <div id="wine-pairings">
+                <h3><label for="wine-pairings">Select a Wine to see Food Pairings:</label></h3>
+                <select id="wine-dropdown" name="select-wine" class="form-control"></select>
+              </div>
+              <div id="food-pairings">
+                <h3><label for="food-pairings">Select a Food to see Wine Pairings:</label></h3>
+                <select id="food-dropdown" name="select-food" class="form-control"></select>
+              </div>
+            </div>
+
+            <div id="selected-pairings">
+
+              <ul id="pairing-list" class="list-group">
+              </ul>
+
+              <div class="selection-info">
+              </div>
+
+            </div>
           </div>
         </div>
       </section>
 
-      </div>
+
     </div>
 
   </body>
@@ -116,4 +113,8 @@
   <script src="./src/food.js"></script>
   <script src="./src/wine.js"></script>
   <script src="./src/adapter.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
 </html>

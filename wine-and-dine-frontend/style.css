@@ -5,6 +5,7 @@
 
 .card {
   background-color: hsla(360, 0%, 100%, 0.7);
+  margin: 7%;
 }
 
 .btn {
@@ -31,12 +32,12 @@ h2, h3, h5 #pair-type-select, #new-pair-btn {
 
 .navbar {
   background-color: #112d37;
-  padding: 20px 30px;
-}
-
-#pairing-dropdowns {
   padding: 20px;
 }
+
+/* #pairing-dropdowns {
+  padding: 8%;
+} */
 
 #wine-pairings, #food-pairings {
   display: none;

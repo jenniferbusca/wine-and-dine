@@ -45,14 +45,16 @@ class Adapter {
   }
 
   handleMouseover = (event) => {
+
     let arr = this.foods.concat(this.wines)
     let selectedText = event.target.innerHTML
     const wineClass = document.querySelector('.wine-item')
     const foodClass = document.querySelector('.food-item')
+
     let selected = arr.find(obj => {
       if(foodClass === null){
-        return obj.varietal === selectedText
-      } else{
+        return obj.varietal=== selectedText
+      } else {
         return obj.name === selectedText
       }
     })
@@ -60,16 +62,6 @@ class Adapter {
     <h5> ${selected[Object.keys(selected)[1]].capitalize()} is a ${selected.category} and is a great pair!</h5>
     `
     this.selectionInfo.style.display = 'block'
-
-  }
-
-  showSelectionInfo = () => {
-    this.addPair = !this.addPair
-    if (this.addPair) {
-      this.addPairForm.style.display = 'block'
-    } else{
-      this.addPairForm.style.display = 'none'
-    }
   }
 
   postWineAndFood(newWine, newFood) {
@@ -83,7 +75,7 @@ class Adapter {
     .then(newPair => {
       let foodObj = {
         id: newPair.food.data.id,
-        name: newPair.food.data.attributes.name.capitalize(),
+        name: newPair.food.data.attributes.name,
         category: newPair.food.data.attributes.category
       }
       let wineObj = {
@@ -162,7 +154,7 @@ class Adapter {
     }); //dedupes array
     this.foods.forEach(food => {
       this.foodDropdown.innerHTML += `
-      <option value="${food.id}">${food.name}</option>
+      <option value="${food.id}">${food.name.capitalize()}</option>
       `
     })
   }
@@ -192,7 +184,7 @@ class Adapter {
     }); // dedupes array
     this.wines.forEach(wine => {
       this.wineDropdown.innerHTML += `
-      <option value="${wine.id}">${wine.varietal}</option>
+      <option value="${wine.id}">${wine.varietal.capitalize()}</option>
       `
     })
   }

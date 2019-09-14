@@ -14,8 +14,8 @@ class PairingsController < ApplicationController
   end
 
   def newpairing
-    wine = Wine.find_or_create_by(varietal: params[:_json][0][:varietal], category: params[:_json][0][:category])
-    food = Food.find_or_create_by(name: params[:_json][1][:name], category: params[:_json][1][:category])
+    wine = Wine.find_or_create_by(varietal: params[:_json][0][:varietal].downcase, category: params[:_json][0][:category].downcase)
+    food = Food.find_or_create_by(name: params[:_json][1][:name].downcase, category: params[:_json][1][:category].downcase)
     pair = Pairing.create(wine_id: wine.id, food_id: food.id)
     render json: {
       food: FoodSerializer.new(food),

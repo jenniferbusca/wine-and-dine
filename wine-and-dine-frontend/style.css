@@ -5,8 +5,10 @@
 
 .card {
   background-color: hsla(360, 0%, 100%, 0.7);
-  margin: 7%;
+  /* margin: 7%; */
 }
+
+
 
 .btn {
   background-color: #112d37;

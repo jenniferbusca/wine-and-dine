@@ -100,8 +100,10 @@ class Adapter {
     return match;
   };
 
-  renderCards(objPairs){
+  renderCards(objPairs, objectId){
+    let arr = this.foods.concat(this.wines)
     let objName = objPairs.name === undefined ? objPairs.varietal : objPairs.name
+    let obj = arr.find(x => x.id === objectId);
     this.pairingList.innerHTML += `
      <div class="card">
        <div class="card-header pair-card" id="heading${objPairs.id}">
@@ -111,7 +113,7 @@ class Adapter {
        </div>
        <div id="collapse${objPairs.id}" class="collapse" aria-labelledby="heading${objPairs.id}" data-parent="#accordionExample">
          <div class="card-body">
-           ${objPairs.category}
+           <p>${obj[Object.keys(obj)[1]].capitalize()} goes well with the ${objPairs.category} ${objName}!</p>
          </div>
        </div>
      </div>
@@ -120,7 +122,6 @@ class Adapter {
 
   handleChange = (event) => {
     this.pairingList.innerHTML = ``//clears previous list
-    // debugger
     let objectId = event.target.value
     let objectType = event.target.id
     fetch(this.pairingURL)
@@ -129,11 +130,11 @@ class Adapter {
       .then(matchedPairings => matchedPairings.forEach(pairing => {
         if(objectType == "wine-dropdown"){
           let foodPairs = pairing.attributes.food
-          this.renderCards(foodPairs)
+          this.renderCards(foodPairs, objectId)
         }
         else if(objectType == "food-dropdown"){
           let winePairs = pairing.attributes.wine
-          this.renderCards(winePairs)
+          this.renderCards(winePairs, objectId)
         }
       }))
   }

@@ -5,7 +5,7 @@
 
 .card {
   background-color: hsla(360, 0%, 100%, 0.7);
-  /* margin: 8%; */
+  padding: 5%;
 }
 
 .btn {
@@ -20,7 +20,7 @@ padding: 5px;
 
 
 section {
-  padding: 20px 15%;
+  padding: 40px 25%;
 }
 
 #container {

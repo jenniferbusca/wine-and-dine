@@ -14,6 +14,7 @@ class Adapter {
     this.pairingList = document.querySelector('.pairing-list')
     this.addPairForm = document.querySelector('.add-pairing-container')
     this.newPairButton = document.getElementById('new-pair-btn')
+    this.selectedPairings = document.getElementById('selected-pairings')
     this.addPair = false // displayForm
     this.submitButton = document.querySelector('.submit') //handleSubmitForm
     this.formInputs = document.querySelectorAll('.input-text')
@@ -102,23 +103,43 @@ class Adapter {
 
   renderCards(objPairs, objectId){
     let arr = this.foods.concat(this.wines)
-    let objName = objPairs.name === undefined ? objPairs.varietal : objPairs.name
+    let objName, objType, objURL= ""
+    if (objPairs.name === undefined){
+      objName = objPairs.varietal
+      objType = "wine"
+    } else {
+      objName = objPairs.name
+      objType = "food"
+    }
+    objURL = this.urlHandler(objName, objType)
     let obj = arr.find(x => x.id === objectId);
+    let objAnchor = objType == "wine" ? `Visit VinePair.com for ${objName.titlecase()} reviews!` : `Visit BonAppetit.com for ${objName} recipes!`
     this.pairingList.innerHTML += `
      <div class="card">
        <div class="card-header pair-card" id="heading${objPairs.id}">
-         <button class="list-group-item list-group-item-action pair-item"  type="button" data-toggle="collapse" data-target="#collapse${objPairs.id}" aria-expanded="false" aria-controls="#collapse${objPairs.id}">
-          ${objName}
+         <button class="list-group-item list-group-item-action pair-item" type="button" data-toggle="collapse" data-target="#collapse${objPairs.id}" aria-expanded="false" aria-controls="#collapse${objPairs.id}">
+          <h3>${objName.titlecase()}</h3>
          </button>
        </div>
        <div id="collapse${objPairs.id}" class="collapse" aria-labelledby="heading${objPairs.id}" data-parent="#accordionExample">
          <div class="card-body">
-           <p>${obj[Object.keys(obj)[1]].capitalize()} goes well with the ${objPairs.category} ${objName}!</p>
+           <p>${obj[Object.keys(obj)[1]].capitalize()} pairs well with the ${objPairs.category} ${objName}!</p>
+           <h5><a href=${objURL} target="_blank">${objAnchor}</a><h5>
          </div>
        </div>
      </div>
     `
   };
+
+  urlHandler(objName, objType){
+    let objNameArray = objName.split(" ")
+    let objNameURL = objNameArray.length >= 2 ? objNameArray.join("-") : objName
+    if(objType === "wine"){
+      return `https://vinepair.com/review/category/wine/?fwp_search_reviews=${objNameURL}`
+    } else {
+      return `https://www.bonappetit.com/ingredient/${objNameURL}`
+    }
+  }
 
   handleChange = (event) => {
     this.pairingList.innerHTML = ``//clears previous list
@@ -147,7 +168,7 @@ class Adapter {
     }); //dedupes array
     this.foods.forEach(food => {
       this.foodDropdown.innerHTML += `
-      <option value="${food.id}">${food.name.capitalize()}</option>
+      <option value="${food.id}">${food.name.titlecase()}</option>
       `
     })
   }
@@ -177,7 +198,7 @@ class Adapter {
     }); // dedupes array
     this.wines.forEach(wine => {
       this.wineDropdown.innerHTML += `
-      <option value="${wine.id}">${wine.varietal.capitalize()}</option>
+      <option value="${wine.id}">${wine.varietal.titlecase()}</option>
       `
     })
   }
@@ -206,4 +227,8 @@ adapter.fetchWine()
 
 String.prototype.capitalize = function() {
   return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
+String.prototype.titlecase = function() {
+  return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
 }

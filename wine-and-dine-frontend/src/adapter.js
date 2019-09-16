@@ -20,16 +20,17 @@ class Adapter {
     this.formInputs = document.querySelectorAll('.input-text')
     this.foods = []
     this.wines = []
-    this.pairingDropdowns.addEventListener('change', this.handleChange)
-    this.newPairButton.addEventListener('click', this.displayForm)
-    this.submitButton.addEventListener('click', this.handleSubmitForm)
-    this.pairTypeSelect.addEventListener('click', this.handlePairChange)
+    this.pairTypeSelect.addEventListener('click', this.handlePairChange)//first event
+    this.pairingDropdowns.addEventListener('change', this.handleChange)//second event
+    this.newPairButton.addEventListener('click', this.displayForm)// third event listener
+    this.submitButton.addEventListener('click', this.handleSubmitForm) // fourth event listener
     this.headerObj = {
       "Content-Type": "application/json",
       "Accept": "application/json"
     }
   }
 
+//first event listener - handles food/wine option
   handlePairChange = (event) => {
     this.pairingList.innerHTML = ``
     let selection = event.target.value
@@ -42,6 +43,85 @@ class Adapter {
     }
   }
 
+// second event listener - handles changes to food and wine dropdown
+  urlHandler(objName, objType){
+    let objNameArray = objName.split(" ")
+    let objNameURL = objNameArray.length >= 2 ? objNameArray.join("-") : objName
+    if(objType === "wine"){
+      return `https://vinepair.com/review/category/wine/?fwp_search_reviews=${objNameURL}`
+    } else {
+      return `https://www.bonappetit.com/ingredient/${objNameURL}`
+    }
+  }
+
+  renderCards(objPairs, objectId){
+    let arr = this.foods.concat(this.wines)
+    let objName, objType, objURL= ""
+    if (objPairs.name === undefined){
+      objName = objPairs.varietal
+      objType = "wine"
+    } else {
+      objName = objPairs.name
+      objType = "food"
+    }
+    this.selectedPairings.style.display = 'block'
+    objURL = this.urlHandler(objName, objType)
+    let obj = arr.find(x => x.id === objectId);
+    let objAnchor = objType == "wine" ? `Visit VinePair.com for ${objName.titlecase()} reviews!` : `Visit BonAppetit.com for ${objName} recipes!`
+    this.pairingList.innerHTML += `
+     <div class="card">
+       <div class="card-header pair-card" id="heading${objPairs.id}">
+         <button class="list-group-item list-group-item-action pair-item" type="button" data-toggle="collapse" data-target="#collapse${objPairs.id}" aria-expanded="false" aria-controls="#collapse${objPairs.id}">
+          <h3>${objName.titlecase()}</h3>
+         </button>
+       </div>
+       <div id="collapse${objPairs.id}" class="collapse" aria-labelledby="heading${objPairs.id}" data-parent="#accordionExample">
+         <div class="card-body">
+           <p>${obj[Object.keys(obj)[1]].capitalize()} pairs well with the ${objPairs.category} ${objName}!</p>
+           <h5><a href=${objURL} target="_blank">${objAnchor}</a><h5>
+         </div>
+       </div>
+     </div>
+    `
+  };
+
+  findMatching(pairingAttributes, objectId, objectType){
+  let category = objectType.split("-")[0]
+  let match = pairingAttributes.filter(x =>
+    x.attributes[category].id === Number(objectId)); //use bracket notation to interpolate here
+    return match;
+  };
+
+  handleChange = (event) => {
+    this.pairingList.innerHTML = ``//clears previous list
+    let objectId = event.target.value
+    let objectType = event.target.id
+    fetch(this.pairingURL)
+      .then(res => res.json())
+      .then(pairingAttributes => this.findMatching(pairingAttributes.data, objectId, objectType))
+      .then(matchedPairings => matchedPairings.forEach(pairing => {
+        if(objectType == "wine-dropdown"){
+          let foodPairs = pairing.attributes.food
+          this.renderCards(foodPairs, objectId)
+        }
+        else if(objectType == "food-dropdown"){
+          let winePairs = pairing.attributes.wine
+          this.renderCards(winePairs, objectId)
+        }
+      }))
+  }
+
+//  third event listener - shows/hides create new pairing form
+  displayForm = () => {
+    this.addPair = !this.addPair
+    if (this.addPair) {
+      this.addPairForm.style.display = 'block'
+    } else{
+      this.addPairForm.style.display = 'none'
+    }
+  }
+
+// fourth event listener - creates new food/wine objects and stores them in db
   postWineAndFood(newWine, newFood) {
     let newPairArray= [newWine, newFood]
     let newWinePost = fetch(this.newPairingURL, {
@@ -68,15 +148,6 @@ class Adapter {
     .then(this.renderAllWines)
   }
 
-  displayForm = () => {
-    this.addPair = !this.addPair
-    if (this.addPair) {
-      this.addPairForm.style.display = 'block'
-    } else{
-      this.addPairForm.style.display = 'none'
-    }
-  }
-
   handleSubmitForm = (event) => {
     let newWine = {
       varietal: this.formInputs[0].value,
@@ -94,73 +165,8 @@ class Adapter {
     this.postWineAndFood(newWine, newFood);
   }
 
-  findMatching(pairingAttributes, objectId, objectType){
-  let category = objectType.split("-")[0]
-  let match = pairingAttributes.filter(x =>
-    x.attributes[category].id === Number(objectId)); //use bracket notation to interpolate here
-    return match;
-  };
-
-  renderCards(objPairs, objectId){
-    let arr = this.foods.concat(this.wines)
-    let objName, objType, objURL= ""
-    if (objPairs.name === undefined){
-      objName = objPairs.varietal
-      objType = "wine"
-    } else {
-      objName = objPairs.name
-      objType = "food"
-    }
-    objURL = this.urlHandler(objName, objType)
-    let obj = arr.find(x => x.id === objectId);
-    let objAnchor = objType == "wine" ? `Visit VinePair.com for ${objName.titlecase()} reviews!` : `Visit BonAppetit.com for ${objName} recipes!`
-    this.pairingList.innerHTML += `
-     <div class="card">
-       <div class="card-header pair-card" id="heading${objPairs.id}">
-         <button class="list-group-item list-group-item-action pair-item" type="button" data-toggle="collapse" data-target="#collapse${objPairs.id}" aria-expanded="false" aria-controls="#collapse${objPairs.id}">
-          <h3>${objName.titlecase()}</h3>
-         </button>
-       </div>
-       <div id="collapse${objPairs.id}" class="collapse" aria-labelledby="heading${objPairs.id}" data-parent="#accordionExample">
-         <div class="card-body">
-           <p>${obj[Object.keys(obj)[1]].capitalize()} pairs well with the ${objPairs.category} ${objName}!</p>
-           <h5><a href=${objURL} target="_blank">${objAnchor}</a><h5>
-         </div>
-       </div>
-     </div>
-    `
-  };
-
-  urlHandler(objName, objType){
-    let objNameArray = objName.split(" ")
-    let objNameURL = objNameArray.length >= 2 ? objNameArray.join("-") : objName
-    if(objType === "wine"){
-      return `https://vinepair.com/review/category/wine/?fwp_search_reviews=${objNameURL}`
-    } else {
-      return `https://www.bonappetit.com/ingredient/${objNameURL}`
-    }
-  }
-
-  handleChange = (event) => {
-    this.pairingList.innerHTML = ``//clears previous list
-    let objectId = event.target.value
-    let objectType = event.target.id
-    fetch(this.pairingURL)
-      .then(res => res.json())
-      .then(pairingAttributes => this.findMatching(pairingAttributes.data, objectId, objectType))
-      .then(matchedPairings => matchedPairings.forEach(pairing => {
-        if(objectType == "wine-dropdown"){
-          let foodPairs = pairing.attributes.food
-          this.renderCards(foodPairs, objectId)
-        }
-        else if(objectType == "food-dropdown"){
-          let winePairs = pairing.attributes.wine
-          this.renderCards(winePairs, objectId)
-        }
-      }))
-  }
-
-// render entire list of food objects
+// This runs immediately upon JS file load
+// render entire list of food objects for dropdown
   renderAllFoods = () => {
     this.foodDropdown.innerHTML = ""
     this.foods = this.foods.filter( function( item, index, inputArray ) {
@@ -190,7 +196,7 @@ class Adapter {
     })
   }
 
-// render entire list of wine objects
+// render entire list of wine objects for dropdown
   renderAllWines = () => {
     this.wineDropdown.innerHTML = ""
     this.wines = this.wines.filter( function( item, index, inputArray ) {

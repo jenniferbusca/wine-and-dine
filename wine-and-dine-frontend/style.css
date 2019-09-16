@@ -19,7 +19,7 @@ padding: 5px;
 
 
 section {
-  padding: 10% 25%;
+  padding: 5% 25%;
 }
 
 #container {
@@ -52,10 +52,9 @@ h2, h3, h5, a:link #pair-type-select, #new-pair-btn {
 
 .navbar {
   background-color: #112d37;
-  padding: 20px;
 }
 
-#wine-pairings, #food-pairings {
+#wine-pairings, #food-pairings, #selected-pairings {
   display: none;
   padding: 10px;
 }

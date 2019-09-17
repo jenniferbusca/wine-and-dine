@@ -32,6 +32,7 @@ class Adapter {
 
 //first event listener - handles food/wine option
   handlePairChange = (event) => {
+    this.selectedPairings.style.display = 'none'
     this.pairingList.innerHTML = ``
     let selection = event.target.value
     if (selection == "food") {
@@ -54,6 +55,7 @@ class Adapter {
     }
   }
 
+//renders cards for accordion pairing list, triggered by handleChange
   renderCards(objPairs, objectId){
     let arr = this.foods.concat(this.wines)
     let objName, objType, objURL= ""
@@ -85,6 +87,7 @@ class Adapter {
     `
   };
 
+//finds matching object for handleChange method below, triggered by handleChange
   findMatching(pairingAttributes, objectId, objectType){
   let category = objectType.split("-")[0]
   let match = pairingAttributes.filter(x =>
@@ -92,6 +95,7 @@ class Adapter {
     return match;
   };
 
+//handles changes to dropdown for food and wine lists
   handleChange = (event) => {
     this.pairingList.innerHTML = ``//clears previous list
     let objectId = event.target.value
@@ -113,7 +117,7 @@ class Adapter {
 
 //  third event listener - shows/hides create new pairing form
   displayForm = () => {
-    this.addPair = !this.addPair
+    this.addPair = !this.addPair //initially set to false at the top
     if (this.addPair) {
       this.addPairForm.style.display = 'block'
     } else{

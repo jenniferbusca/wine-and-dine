@@ -30,6 +30,7 @@ class Adapter {
     }
   }
 
+
 //first event listener - handles food/wine option
   handlePairChange = (event) => {
     this.selectedPairings.style.display = 'none'
@@ -44,7 +45,7 @@ class Adapter {
     }
   }
 
-// second event listener - handles changes to food and wine dropdown
+// called by renderCards
   urlHandler(objName, objType){
     let objNameArray = objName.split(" ")
     let objNameURL = objNameArray.length >= 2 ? objNameArray.join("-") : objName
@@ -68,6 +69,7 @@ class Adapter {
     }
     this.selectedPairings.style.display = 'block'
     objURL = this.urlHandler(objName, objType)
+    this.getWineDataFromAPI(objName)
     let obj = arr.find(x => x.id === objectId);
     let objAnchor = objType == "wine" ? `Visit VinePair.com for ${objName.titlecase()} reviews!` : `Visit BonAppetit.com for ${objName} recipes!`
     this.pairingList.innerHTML += `
@@ -79,7 +81,7 @@ class Adapter {
        </div>
        <div id="collapse${objPairs.id}" class="collapse" aria-labelledby="heading${objPairs.id}" data-parent="#accordionExample">
          <div class="card-body">
-           <p>${obj[Object.keys(obj)[1]].capitalize()} pairs well with the ${objPairs.category} ${objName}!</p>
+           <p>${obj[Object.keys(obj)[1]].capitalize()} pairs well with ${objName}!</p>
            <h5><a href=${objURL} target="_blank">${objAnchor}</a><h5>
          </div>
        </div>
@@ -95,7 +97,7 @@ class Adapter {
     return match;
   };
 
-//handles changes to dropdown for food and wine lists
+// second event listener - handles changes to food and wine dropdown
   handleChange = (event) => {
     this.pairingList.innerHTML = ``//clears previous list
     let objectId = event.target.value

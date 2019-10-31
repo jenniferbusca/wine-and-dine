@@ -69,7 +69,6 @@ class Adapter {
     }
     this.selectedPairings.style.display = 'block'
     objURL = this.urlHandler(objName, objType)
-    this.getWineDataFromAPI(objName)
     let obj = arr.find(x => x.id === objectId);
     let objAnchor = objType == "wine" ? `Visit VinePair.com for ${objName.titlecase()} reviews!` : `Visit BonAppetit.com for ${objName} recipes!`
     this.pairingList.innerHTML += `
